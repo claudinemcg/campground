@@ -5,6 +5,7 @@
             <!-- put in middle -->
             <form action="/campgrounds" method="POST" novalidate class="validated-form">
                 <!-- novalidate means that it won't use HTML5's validation, we are using Bootstrap's here -->
+                <!-- validated-form matches code in script at the end -->
                 <div class="mb-3">
                     <label class="form-label" for="title">Title</label>
                     <input class="form-control" type="text" id="title" name="campground[title]" required>
@@ -50,8 +51,8 @@
             'use strict'
 
             // Fetch all the forms we want to apply custom Bootstrap validation styles to
-            var forms = document.querySelectorAll('.validation-form')
-
+            var forms = document.querySelectorAll('.validated-form')
+            // validated-form matched class in form above
             // Loop over them and prevent submission
             Array.from(forms)
                 .forEach(function (form) {
