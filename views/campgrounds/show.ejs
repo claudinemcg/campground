@@ -1,6 +1,6 @@
 <%layout ('layouts/boilerplate') %>
     <div class="row">
-        <div class="col-6 offset-3">
+        <div class="col-8">
             <div class="card mb-3">
                 <!-- took out style=" width: 18rem; will use grid system instead -->
                 <img src="<%= campground.image %>" class="card-img-top" alt="...">
@@ -31,6 +31,9 @@
                     <a href="/campgrounds" class="card-link">All Campgrounds</a>
                 </div>
             </div>
+
+        </div>
+        <div class="col-4">
             <div class="mb-3">
                 <h2>Leave a Review</h2>
                 <form action="/campgrounds/<%=campground._id%>/reviews" method="POST" novalidate class="validated-form">
@@ -46,8 +49,21 @@
                             Looks good!
                         </div>
                     </div>
-                    <button class="btn btn-success">Add Review</button>
+                    <div class="mb-3">
+                        <button class="btn btn-success">Add Review</button>
                 </form>
             </div>
+            <% for (let review of campground.reviews) {%>
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title">Rating: <%= review.rating %>
+                        </h5>
+                        <p class="card-text">Review: <%= review.body %>
+                        </p>
+                    </div>
+
+                </div>
+                <% } %>
         </div>
+    </div>
     </div>
