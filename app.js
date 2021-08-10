@@ -11,6 +11,8 @@ const catchAsync = require('./utils/catchAsync');
 const ExpressError = require('./utils/ExpressError');
 const Campground = require('./models/campground');
 const Review = require('./models/review');
+const campgrounds = require('./routes/campgrounds');
+const reviews = require('./routes/reviews');
 
 mongoose.connect('mongodb://localhost:27017/yelp-camp', {
     useNewUrlParser: true,
@@ -31,102 +33,17 @@ app.set('views', path.join(__dirname, 'views'));
 app.use(express.urlencoded({ extended: true })); // parse req.body
 app.use(methodOverride('_method'));
 
-const validateCampground = (req, res, next) => {
-    // const result = campgroundSchema.validate(req.body);
-    // don't need all result- take error from it (below)
-    const { error } = campgroundSchema.validate(req.body);
-    if (error) {
-        const msg = error.details.map(el => el.message).join(',')
-        // need map over error.details and turn into a string as it's an array and need to turn into a string
-        // to be able to pass it into ExpressError below
-        throw new ExpressError(msg, 400)
-        // result.error.details -  found using console.log(result)
-        // it's an array
-    } else {
-        next();
-        //  need to call next if we want make it into the route handle app.post below 
-    }
-    // console.log(result)
-}
 
-const validateReview = (req, res, next) => {
-    const { error } = reviewSchema.validate(req.body);
-    if (error) {
-        const msg = error.details.map(el => el.message).join(',')
-        throw new ExpressError(msg, 400)
-    } else {
-        next();
-    }
-}
+
+
+
+app.use('/campgrounds', campgrounds) // use the campgrounds route
+app.use('/campgrounds/:id/reviews', reviews) // use the reviews route
 
 app.get('/', (req, res) => {
     // res.send('Hello!')
     res.render('home'); // home.ejs
 })
-
-app.get('/campgrounds', catchAsync(async (req, res) => {
-    const campgrounds = await Campground.find({});
-    res.render('campgrounds/index', { campgrounds })
-}));
-
-// new needs to go before show or else it treats /new as /id
-app.get('/campgrounds/new', (req, res) => {
-    res.render('campgrounds/new')
-})
-
-app.post('/campgrounds', validateCampground, catchAsync(async (req, res) => {
-    // validateCampground runds first
-    //if (!req.body.campground) throw new ExpressError('Invalid Campground Data', 400);
-    // throw error, catchAsync will hand it off to next which throws it down to app.us at the bottom
-
-
-    const campground = new Campground(req.body.campground);
-    // need app.use(express.urlencoded({extended: true})); from above to parse req.body
-    await campground.save();
-    res.redirect(`/campgrounds/${campground._id}`)
-}))
-
-app.get('/campgrounds/:id', catchAsync(async (req, res) => { // show
-    const campground = await Campground.findById(req.params.id).populate('reviews');
-    // console.log(campground); // check if populating works
-    res.render('campgrounds/show', { campground })
-}))
-
-app.get('/campgrounds/:id/edit', catchAsync(async (req, res) => { // show
-    const campground = await Campground.findById(req.params.id)
-    res.render('campgrounds/edit', { campground })
-}));
-
-app.put('/campgrounds/:id', validateCampground, catchAsync(async (req, res) => {
-    const { id } = req.params;
-    const campground = await Campground.findByIdAndUpdate(id, { ...req.body.campground }) // spread req.body.campground into id object
-    res.redirect(`/campgrounds/${campground._id}`)
-}));
-
-app.delete('/campgrounds/:id', catchAsync(async (req, res) => {
-    const { id } = req.params;
-    await Campground.findByIdAndDelete(id);
-    res.redirect('/campgrounds');
-}));
-
-
-app.post('/campgrounds/:id/reviews', validateReview, catchAsync(async (req, res) => {
-    const campground = await Campground.findById(req.params.id);
-    const review = new Review(req.body.review); // in form name = "review[x]""
-    campground.reviews.push(review);
-    await review.save();
-    await campground.save();
-    res.redirect(`/campgrounds/${campground._id}`)
-}));
-
-app.delete('/campgrounds/:id/reviews/:reviewId', catchAsync(async (req, res) => {
-    // need to remove review and ref to review in campground
-    const { id, reviewId } = req.params; //req.params.id and req.params.reviewId
-    await Campground.findByIdAndUpdate(id, { $pull: { reviews: reviewId } });
-    // when deleteing reviews, delete the reviews in the campground, too
-    await Review.findByIdAndDelete(reviewId);
-    res.redirect(`/campgrounds/${id}`);
-}));
 
 
 app.all('*', (req, res, next) => { // * all routes
