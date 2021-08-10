@@ -38,11 +38,10 @@ router.post('/', validateCampground, catchAsync(async (req, res) => {
     // validateCampground runds first
     //if (!req.body.campground) throw new ExpressError('Invalid Campground Data', 400);
     // throw error, catchAsync will hand it off to next which throws it down to app.us at the bottom
-
-
     const campground = new Campground(req.body.campground);
     // need app.use(express.urlencoded({extended: true})); from above to parse req.body
     await campground.save();
+    req.flash('success', 'Successfully made a new campground!');
     res.redirect(`/campgrounds/${campground._id}`)
 }))
 
