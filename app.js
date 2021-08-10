@@ -5,6 +5,7 @@ const path = require('path');
 const mongoose = require('mongoose');
 const ejsMate = require('ejs-mate');
 const session = require('express-session');
+const flash = require('connect-flash');
 const Joi = require('joi');
 const { campgroundSchema, reviewSchema } = require('./schemas.js');
 // destructure schemas because we'll use a few of the schemas in that file
@@ -46,7 +47,17 @@ const sessionConfig = {
         maxAge: 1000 * 60 * 60 * 24 * 7
     }
 }
-app.use(session(sessionConfig))
+app.use(session(sessionConfig));
+app.use(flash());
+
+app.use((req, res, next) => {
+    res.locals.success = req.flash('success');
+    // whatever is in the flash under success, take it and have access to it 
+    // under locals under key success
+    // use this middleware so we don't have to pass anything to our templates
+    res.locals.error = req.flash('error');
+    next();
+})
 
 app.use('/campgrounds', campgrounds) // use the campgrounds route
 app.use('/campgrounds/:id/reviews', reviews) // use the reviews route
