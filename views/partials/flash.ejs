@@ -1,0 +1,7 @@
+<% if (success && success.length) { %>
+    <!-- if it's length is 0 then that's falsy so won't appear-->
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <%= success %>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    <% } %>
