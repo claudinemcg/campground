@@ -17,7 +17,8 @@ const reviews = require('./routes/reviews');
 mongoose.connect('mongodb://localhost:27017/yelp-camp', {
     useNewUrlParser: true,
     useCreateIndex: true,
-    useUnifiedTopology: true
+    useUnifiedTopology: true,
+    useFindAndModify: false // so don't get deprecation warning in the console
 });
 
 const db = mongoose.connection; // set to db so its shorter to write
@@ -32,13 +33,11 @@ app.set('views', path.join(__dirname, 'views'));
 
 app.use(express.urlencoded({ extended: true })); // parse req.body
 app.use(methodOverride('_method'));
-
-
-
-
+app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/campgrounds', campgrounds) // use the campgrounds route
 app.use('/campgrounds/:id/reviews', reviews) // use the reviews route
+
 
 app.get('/', (req, res) => {
     // res.send('Hello!')
