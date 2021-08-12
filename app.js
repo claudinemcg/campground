@@ -1,20 +1,27 @@
+// const Joi = require('joi');
+// const { campgroundSchema, reviewSchema } = require('./schemas.js');
+// destructure schemas because we'll use a few of the schemas in that file
+// const catchAsync = require('./utils/catchAsync');
+
 const express = require('express');
-const app = express();
-const methodOverride = require('method-override');
 const path = require('path');
+const methodOverride = require('method-override');
 const mongoose = require('mongoose');
 const ejsMate = require('ejs-mate');
 const session = require('express-session');
 const flash = require('connect-flash');
-const Joi = require('joi');
-const { campgroundSchema, reviewSchema } = require('./schemas.js');
-// destructure schemas because we'll use a few of the schemas in that file
-const catchAsync = require('./utils/catchAsync');
 const ExpressError = require('./utils/ExpressError');
-const Campground = require('./models/campground');
-const Review = require('./models/review');
+const passport = require('passport');
+const LocalStrategy = require('passport-local');
+
+
+// const Campground = require('./models/campground');
+// const Review = require('./models/review');
+const User = require('./models/user');
+
 const campgrounds = require('./routes/campgrounds');
 const reviews = require('./routes/reviews');
+//const users = require('./routes/users');
 
 mongoose.connect('mongodb://localhost:27017/yelp-camp', {
     useNewUrlParser: true,
@@ -28,6 +35,8 @@ db.on('error', console.error.bind(console, 'connection error'));
 db.once('open', () => {
     console.log('Database Connected');
 })
+
+const app = express();
 
 app.engine('ejs', ejsMate); // use ejsMate, not the default
 app.set('view engine', 'ejs');
@@ -49,6 +58,18 @@ const sessionConfig = {
 }
 app.use(session(sessionConfig));
 app.use(flash());
+
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(new LocalStrategy(User.authenticate()));
+// passport-> use LocalStrategy (passport-local) and for that Local Strategy
+// the authenciation is located on our user model called authenicate 
+// (added in automatically by passport)
+passport.serializeUser(User.serializeUser());
+// how to store user in session
+passport.deserializeUser(User.deserializeUser());
+// get user out of that session
+
 
 app.use((req, res, next) => {
     res.locals.success = req.flash('success');
