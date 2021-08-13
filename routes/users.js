@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const User = require('../models/user');
 const catchAsync = require('../utils/catchAsync');
+const passport = require('passport');
 // const ExpressError = require('../utils/ExpressError');
 // const { userSchema } = require('../schemas.js');
 
@@ -25,10 +26,17 @@ router.post('/register', catchAsync(async (req, res) => {
         req.flash('error', e.message);
         res.redirect('register');
     }
-
-
-
 }));
+
+router.get('/login', (req, res) => {
+    res.render('users/login');
+});
+
+router.post('/login', passport.authenticate('local', { failureFlash: true, failureRedirect: 'login' }), (req, res) => {
+    // passport.authenticate() is a middleware from passport
+    req.flash('success', 'Welcome Back');
+    res.redirect('/campgrounds');
+})
 
 
 module.exports = router;
