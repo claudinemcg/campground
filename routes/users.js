@@ -10,16 +10,22 @@ router.get('/register', (req, res) => {
     res.render('users/register');
 });
 
-router.post('/register', catchAsync(async (req, res) => {
+router.post('/register', catchAsync(async (req, res, next) => {
     // use try catch to use own error catch and redirect
     try {
         const { email, username, password } = req.body;
         // destructure email, username, password from req.body
         const user = new User({ email, username });
         const registeredUser = await User.register(user, password); // hash and salt password
-        console.log(registeredUser);
-        req.flash('success', 'Welcome to Yelp Camp!');
-        res.redirect('/campgrounds');
+        // console.log(registeredUser);
+        req.login(registeredUser, err => {  // passport- logins registered user
+            // can't use await above as it's not supported in passport
+            if (err) return next(err);
+            req.flash('success', 'Welcome to Yelp Camp!');
+            res.redirect('/campgrounds');
+        });
+
+
         //res.send(req.body);
         // not logged in, just registered
     } catch (e) {
@@ -35,7 +41,11 @@ router.get('/login', (req, res) => {
 router.post('/login', passport.authenticate('local', { failureFlash: true, failureRedirect: 'login' }), (req, res) => {
     // passport.authenticate() is a middleware from passport
     req.flash('success', 'Welcome Back');
-    res.redirect('/campgrounds');
+    const redirectUrl = req.session.returnTo || '/campgrounds';
+    // if they had to log in, after login in return to the page they tried to
+    // access before login, if  req.session.returnTo send them to /campgrounds
+    delete req.session.returnTo; // don't want to store this in the session
+    res.redirect(redirectUrl);
 })
 
 router.get('/logout', (req, res) => {

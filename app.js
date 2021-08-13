@@ -71,8 +71,14 @@ passport.deserializeUser(User.deserializeUser());
 // get user out of that session
 
 
+
 app.use((req, res, next) => {
     // access to these in every template
+    // console.log(req.session);
+    if (!['/login', '/'].includes(req.originalUrl)) {
+        req.session.returnTo = req.originalUrl;
+    } // added this in so when the user logins, it goes to the most recent
+    // requested page after login
     res.locals.currentUser = req.user;
     // passport stores user id/email/username when logged in in req.user
     // undefined if not signed in
@@ -82,7 +88,7 @@ app.use((req, res, next) => {
     // use this middleware so we don't have to pass anything to our templates
     res.locals.error = req.flash('error');
     next();
-})
+});
 
 app.use('/campgrounds', campgroundRoutes) // use the campground routes
 app.use('/campgrounds/:id/reviews', reviewRoutes) // use the review routes
