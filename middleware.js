@@ -3,6 +3,9 @@ module.exports.isLoggedIn = (req, res, next) => {
     // console.log("REQ.USER", req.user);
     // req.user put there by passport
     if (!req.isAuthenticated()) {
+        // store url they are requesting
+        // console.log(req.path, req.originalUrl);
+        // req.session.returnTo = req.originalUrl;
         req.flash('error', 'You must be signed in to create a new campground');
         return res.redirect('/login');
     }
