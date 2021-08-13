@@ -72,6 +72,10 @@ passport.deserializeUser(User.deserializeUser());
 
 
 app.use((req, res, next) => {
+    // access to these in every template
+    res.locals.currentUser = req.user;
+    // passport stores user id/email/username when logged in in req.user
+    // undefined if not signed in
     res.locals.success = req.flash('success');
     // whatever is in the flash under success, take it and have access to it 
     // under locals under key success
