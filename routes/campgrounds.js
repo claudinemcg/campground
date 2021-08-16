@@ -41,14 +41,16 @@ router.post('/', isLoggedIn, validateCampground, catchAsync(async (req, res) => 
     // throw error, catchAsync will hand it off to next which throws it down to app.us at the bottom
     const campground = new Campground(req.body.campground);
     // need app.use(express.urlencoded({extended: true})); from above to parse req.body
+    campground.author = req.user.id;
+    // assign loggedIn user to the author of the campground
     await campground.save();
     req.flash('success', 'Successfully made a new campground!');
     res.redirect(`/campgrounds/${campground._id}`)
 }))
 
 router.get('/:id', catchAsync(async (req, res) => { // show
-    const campground = await Campground.findById(req.params.id).populate('reviews');
-    // console.log(campground); // check if populating works
+    const campground = await Campground.findById(req.params.id).populate('reviews').populate('author');
+    console.log(campground); // check if populating works
     if (!campground) {
         // if user didn't find campground with an id e.g. campground deleted
         req.flash('error', 'Cannot Find Campground');
