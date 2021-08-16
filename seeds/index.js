@@ -28,6 +28,7 @@ const seedDB = async () => { // seedDB returns a promise because it's an async f
         const random1000 = Math.floor(Math.random() * 1000); // 100- cities in array in cities.js
         const price = Math.floor(Math.random() * 20) + 10; // random price
         const camp = new Campground({
+            author: '6116631106371f5ad4bba995',
             location: `${cities[random1000].city}, ${cities[random1000].state}`,
             title: `${sample(descriptors)} ${sample(places)}`,
             image: 'https://source.unsplash.com/collection/483251',

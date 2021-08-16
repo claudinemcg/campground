@@ -8,6 +8,10 @@ const CampgroundSchema = new Schema({
     price: Number,
     location: String,
     description: String,
+    author: {
+        type: Schema.Types.ObjectId,
+        ref: 'User' // User model
+    },
     reviews: [
         {
             type: Schema.Types.ObjectId,
