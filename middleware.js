@@ -1,4 +1,5 @@
 const Campground = require('./models/campground');
+const Review = require('./models/review');
 const { campgroundSchema, reviewSchema } = require('./schemas.js');
 // destructure schemas because we'll use a few of the schemas in that file
 const ExpressError = require('./utils/ExpressError');
@@ -12,7 +13,7 @@ module.exports.isLoggedIn = (req, res, next) => {
         // store url they are requesting
         // console.log(req.path, req.originalUrl);
         // req.session.returnTo = req.originalUrl;
-        req.flash('error', 'You must be signed in to create a new campground');
+        req.flash('error', 'You must be signed in first');
         return res.redirect('/login');
     }
     next();
@@ -48,7 +49,7 @@ module.exports.isAuthor = async (req, res, next) => {
     next();
 }
 
-// from routes/reviews.js
+// for routes/reviews.js
 module.exports.validateReview = (req, res, next) => {
     const { error } = reviewSchema.validate(req.body);
     if (error) {
@@ -57,4 +58,16 @@ module.exports.validateReview = (req, res, next) => {
     } else {
         next();
     }
+}
+
+module.exports.isReviewAuthor = async (req, res, next) => {
+    // async because we need to await Campground.findById(id)
+    const { id, reviewId } = req.params; // campground params
+    const review = await Review.findById(reviewId);
+
+    if (!review.author.equals(req.user._id)) {
+        req.flash('error', 'You do not have permission to do that!');
+        return res.redirect(`/campgrounds/${id}`);
+    }
+    next();
 }
