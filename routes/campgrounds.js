@@ -1,29 +1,11 @@
 const express = require('express');
 const router = express.Router();
 const catchAsync = require('../utils/catchAsync');
-const ExpressError = require('../utils/ExpressError');
-const Campground = require('../models/campground');
-const { campgroundSchema } = require('../schemas.js');
-// destructure schemas because we'll use a few of the schemas in that file
-const { isLoggedIn } = require('../middleware')
 
-const validateCampground = (req, res, next) => {
-    // const result = campgroundSchema.validate(req.body);
-    // don't need all result- take error from it (below)
-    const { error } = campgroundSchema.validate(req.body);
-    if (error) {
-        const msg = error.details.map(el => el.message).join(',')
-        // need map over error.details and turn into a string as it's an array and need to turn into a string
-        // to be able to pass it into ExpressError below
-        throw new ExpressError(msg, 400)
-        // result.error.details -  found using console.log(result)
-        // it's an array
-    } else {
-        next();
-        //  need to call next if we want make it into the route handle app.post below 
-    }
-    // console.log(result)
-}
+const Campground = require('../models/campground');
+// const { campgroundSchema } = require('../schemas.js');
+// don't need above as we moved middleware that uses it to middleware.js file
+const { isLoggedIn, validateCampground, isAuthor } = require('../middleware');
 
 router.get('/', catchAsync(async (req, res) => {
     const campgrounds = await Campground.find({});
@@ -59,7 +41,7 @@ router.get('/:id', catchAsync(async (req, res) => { // show
     res.render('campgrounds/show', { campground })
 }))
 
-router.get('/:id/edit', isLoggedIn, catchAsync(async (req, res) => { // show
+router.get('/:id/edit', isLoggedIn, isAuthor, catchAsync(async (req, res) => { // show
     const campground = await Campground.findById(req.params.id)
     if (!campground) {
         // if user didn't find campground with an id e.g. campground deleted
@@ -69,14 +51,14 @@ router.get('/:id/edit', isLoggedIn, catchAsync(async (req, res) => { // show
     res.render('campgrounds/edit', { campground })
 }));
 
-router.put('/:id', isLoggedIn, validateCampground, catchAsync(async (req, res) => {
+router.put('/:id', isLoggedIn, isAuthor, validateCampground, catchAsync(async (req, res) => {
     const { id } = req.params;
     const campground = await Campground.findByIdAndUpdate(id, { ...req.body.campground }) // spread req.body.campground into id object
     req.flash('success', 'Successfully updated campground!');
     res.redirect(`/campgrounds/${campground._id}`)
 }));
 
-router.delete('/:id', isLoggedIn, catchAsync(async (req, res) => {
+router.delete('/:id', isLoggedIn, isAuthor, catchAsync(async (req, res) => {
     const { id } = req.params;
     await Campground.findByIdAndDelete(id);
     req.flash('success', 'Successfully deleted campground!');
