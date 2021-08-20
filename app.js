@@ -2,6 +2,11 @@
 // const { campgroundSchema, reviewSchema } = require('./schemas.js');
 // destructure schemas because we'll use a few of the schemas in that file
 // const catchAsync = require('./utils/catchAsync');
+if (process.env.NODE_ENV !== 'production') {// ie if you're in development mode
+    require('dotenv').config()
+}
+
+console.log(process.env.SECRET);
 
 const express = require('express');
 const path = require('path');
