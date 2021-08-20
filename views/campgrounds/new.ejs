@@ -4,7 +4,7 @@
         <h1 class="text-center">New Campground</h1>
         <div class="col-6 offset-3">
             <!-- put in middle -->
-            <form action="/campgrounds" method="POST" novalidate class="validated-form">
+            <form action="/campgrounds" method="POST" novalidate class="validated-form" enctype="multipart/form-data">
                 <!-- novalidate means that it won't use HTML5's validation, we are using Bootstrap's here -->
                 <!-- validated-form matches code in script at the end -->
                 <div class="mb-3">
@@ -23,11 +23,12 @@
                     </div>
                 </div>
                 <div class=" mb-3">
-                    <label class="form-label" for="image">Image Url</label>
-                    <input class="form-control" type="text" id="image" name="campground[image]" required>
+                    <!-- <label class="form-label" for="image">Image</label> -->
+                    <!-- <input class="form-control" type="text" id="image" name="campground[image]" required>
                     <div class="valid-feedback">
                         Looks good!
-                    </div>
+                    </div> -->
+                    <input type="file" name="image" id="" multiple>
                 </div>
 
                 <div class="mb-3">

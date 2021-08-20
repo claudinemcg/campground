@@ -6,10 +6,18 @@ const Campground = require('../models/campground');
 // don't need above as we moved middleware that uses it to middleware.js file
 const { isLoggedIn, validateCampground, isAuthor } = require('../middleware');
 const campgrounds = require('../controllers/campgrounds');
+const multer = require('multer');
+const upload = multer({ dest: 'uploads/' });
 
 router.route('/')
     .get(catchAsync(campgrounds.index)) // index page
-    .post(isLoggedIn, validateCampground, catchAsync(campgrounds.createCampground))
+    // .post(isLoggedIn, validateCampground, catchAsync(campgrounds.createCampground))
+    .post(upload.array('image'), (req, res) => {
+        // expect multiple images under key 'image'
+        // can use upload.single for one
+        console.log(req.body, req.files);
+        res.send('it worked')
+    })
 // create new campground
 //if (!req.body.campground) throw new ExpressError('Invalid Campground Data', 400);
 // throw error, catchAsync will hand it off to next which throws it down to app.us at the bottom
