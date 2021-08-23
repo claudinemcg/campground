@@ -7,17 +7,15 @@ const Campground = require('../models/campground');
 const { isLoggedIn, validateCampground, isAuthor } = require('../middleware');
 const campgrounds = require('../controllers/campgrounds');
 const multer = require('multer');
-const upload = multer({ dest: 'uploads/' });
+const { storage } = require('../cloudinary');
+const upload = multer({ storage });
 
 router.route('/')
     .get(catchAsync(campgrounds.index)) // index page
-    // .post(isLoggedIn, validateCampground, catchAsync(campgrounds.createCampground))
-    .post(upload.array('image'), (req, res) => {
-        // expect multiple images under key 'image'
-        // can use upload.single for one
-        console.log(req.body, req.files);
-        res.send('it worked')
-    })
+    .post(isLoggedIn, upload.array('image'), validateCampground, catchAsync(campgrounds.createCampground))
+// expect multiple images under key 'image'
+// can use upload.single for one
+// console.log(req.body, req.files);
 // create new campground
 //if (!req.body.campground) throw new ExpressError('Invalid Campground Data', 400);
 // throw error, catchAsync will hand it off to next which throws it down to app.us at the bottom

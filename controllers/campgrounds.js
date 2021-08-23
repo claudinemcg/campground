@@ -12,9 +12,23 @@ module.exports.renderNewForm = (req, res) => {
 module.exports.createCampground = async (req, res) => {
     const campground = new Campground(req.body.campground);
     // need app.use(express.urlencoded({extended: true})) to parse req.body
+    campground.images = req.files.map(f => ({ url: f.path, filename: f.filename }))
+    // map over array in req.files and get the path value for our url key
+    // and filename value for our filename key
+    // e.g 
+    // [{
+    //      fieldname: 'image',
+    //      originalname: 'tent.jpeg',
+    //      encoding: '7bit',
+    //      mimetype: 'image/jpeg',
+    //   ***path: 'https://res.cloudinary.com/di6k1pdz4/image/upload/v1629724579/YelpCamp/ohv4sbb6ognug61vgzk1.jpg'***,
+    //      size: 260601,
+    //   ***filename: 'YelpCamp/ohv4sbb6ognug61vgzk1'****
+    // ]}
     campground.author = req.user.id;
     // assign loggedIn user to the author of the campground
     await campground.save();
+    console.log(campground);
     req.flash('success', 'Successfully made a new campground!');
     res.redirect(`/campgrounds/${campground._id}`)
 }
