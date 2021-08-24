@@ -2,14 +2,22 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema // shorter to write
 const Review = require('./review')
 
+const ImageSchema = new Schema({
+    url: String,
+    filename: String
+});
+
+ImageSchema.virtual('thumbnail').get(function () {
+    // virtual from mongo
+    return this.url.replace('/upload', '/upload/w_200');
+    // this refers to image
+    // create a thmubnail by putting w_200 (width 200) in the url as cloudinary 
+    // requests for its transformations
+});
+
 const CampgroundSchema = new Schema({
     title: String,
-    images: [
-        {
-            url: String,
-            filename: String
-        }
-    ],
+    images: [ImageSchema],
     price: Number,
     location: String,
     description: String,
