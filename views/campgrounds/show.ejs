@@ -1,7 +1,9 @@
 <%layout ('layouts/boilerplate') %>
     <link rel="stylesheet" href="/stylesheets/stars.css">
+
     <div class="row">
-        <div class="col-8">
+        <div class="col-6">
+            <div id='map' style='width: 400px; height: 300px;'></div>
             <div id="campgroundCarousel" class="carousel slide" data-bs-ride="carousel">
                 <div class="carousel-inner">
                     <% campground.images.forEach((img, i)=> { %>
@@ -130,3 +132,11 @@
 
     </div>
     </div>
+    <script>
+        const mapToken = '<%-process.env.MAPBOX_TOKEN%>';
+        // need this for the script below to run
+        const campground = <%-JSON.stringify(campground) %>;
+        // get coordinates in here
+
+    </script>
+    <script src="/javascripts/showPageMap.js"></script>
