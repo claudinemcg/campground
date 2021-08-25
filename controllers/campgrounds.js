@@ -1,6 +1,9 @@
 const Campground = require('../models/campground');
 const { cloudinary } = require("../cloudinary");
 
+const mbxGeocoding = require('@mapbox/mapbox-sdk/services/geocoding');
+const mapBoxToken = process.env.MAPBOX_TOKEN;
+const geocoder = mbxGeocoding({ accessToken: mapBoxToken });
 
 module.exports.index = async (req, res) => {
     const campgrounds = await Campground.find({});
@@ -12,9 +15,16 @@ module.exports.renderNewForm = (req, res) => {
 }
 
 module.exports.createCampground = async (req, res) => {
-    const campground = new Campground(req.body.campground);
+    const geoData = await geocoder.forwardGeocode({
+        query: req.body.campground.location,
+        limit: 1
+    }).send()
+    console.log(geoData.body.features[0].geometry.coordinates);
+    // features is an array
+    res.send('OK!');
+    // const campground = new Campground(req.body.campground);
     // need app.use(express.urlencoded({extended: true})) to parse req.body
-    campground.images = req.files.map(f => ({ url: f.path, filename: f.filename }))
+    // campground.images = req.files.map(f => ({ url: f.path, filename: f.filename }))
     // map over array in req.files and get the path value for our url key
     // and filename value for our filename key
     // e.g 
@@ -27,12 +37,12 @@ module.exports.createCampground = async (req, res) => {
     //      size: 260601,
     //   ***filename: 'YelpCamp/ohv4sbb6ognug61vgzk1'****
     // ]}
-    campground.author = req.user.id;
+    // campground.author = req.user.id;
     // assign loggedIn user to the author of the campground
-    await campground.save();
-    console.log(campground);
-    req.flash('success', 'Successfully made a new campground!');
-    res.redirect(`/campgrounds/${campground._id}`)
+    // await campground.save();
+    // console.log(campground);
+    // req.flash('success', 'Successfully made a new campground!');
+    // res.redirect(`/campgrounds/${campground._id}`)
 }
 
 module.exports.showCampground = async (req, res) => { // show
