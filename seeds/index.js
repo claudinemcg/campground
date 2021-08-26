@@ -28,6 +28,7 @@ const seedDB = async () => { // seedDB returns a promise because it's an async f
         const random1000 = Math.floor(Math.random() * 1000); // 100- cities in array in cities.js
         const price = Math.floor(Math.random() * 20) + 10; // random price
         const camp = new Campground({
+            // my author id
             author: '6116631106371f5ad4bba995',
             location: `${cities[random1000].city}, ${cities[random1000].state}`,
             title: `${sample(descriptors)} ${sample(places)}`,
@@ -35,6 +36,7 @@ const seedDB = async () => { // seedDB returns a promise because it's an async f
             // random images
             description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.',
             price, // shorthand for price: price
+            geometry: { type: 'Point', coordinates: [-118.2436849, 34.0522342] },
             images: [
                 {
                     url: 'https://res.cloudinary.com/di6k1pdz4/image/upload/v1629730234/YelpCamp/mzgk7hr7nmfbcwlqm4hc.jpg',
