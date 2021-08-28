@@ -24,7 +24,7 @@ const seedDB = async () => { // seedDB returns a promise because it's an async f
     await Campground.deleteMany({}); // delete every campground in database
     // const c = new Campground({ title: 'Purple Field' });
     // await c.save();
-    for (let i = 0; i < 50; i++) { // creates 50 new campgrounds
+    for (let i = 0; i < 300; i++) { // creates 50 new campgrounds
         const random1000 = Math.floor(Math.random() * 1000); // 100- cities in array in cities.js
         const price = Math.floor(Math.random() * 20) + 10; // random price
         const camp = new Campground({
