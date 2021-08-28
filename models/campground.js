@@ -8,12 +8,17 @@ const ImageSchema = new Schema({
 });
 
 ImageSchema.virtual('thumbnail').get(function () {
-    // virtual from mongo
+    // virtual property from mongoose
     return this.url.replace('/upload', '/upload/w_200');
     // this refers to image
     // create a thmubnail by putting w_200 (width 200) in the url as cloudinary 
     // requests for its transformations
+    // ie its a modified version of an already existing image
 });
+
+const opts = { toJSON: { virtuals: true } };
+// mongoose virtuals arn't automatically included when converted to JSOn so need to set this here
+// need it for CampgroundSchema.virtual('properties.popUpMarkup')... below
 
 const CampgroundSchema = new Schema({
     title: String,
@@ -42,7 +47,16 @@ const CampgroundSchema = new Schema({
             ref: 'Review' // Review model
         }
     ]
-})
+}, opts);
+
+CampgroundSchema.virtual('properties.popUpMarkup').get(function () {
+    // virtual property from mongoose
+    // need properties when formatting mapbox popup
+    return `
+    <strong><a href="/campgrounds/${this._id}">${this.title}</a></strong>
+        <p> ${this.description.substring(0, 20)} ...</p> `
+    // this refers to the particular campground instance
+});
 
 CampgroundSchema.post('findOneAndDelete', async function (doc) {
     // findOneAndDelete is a query middleware

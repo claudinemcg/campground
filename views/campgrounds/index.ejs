@@ -17,6 +17,10 @@
                         <h5 class="card-title">
                             <%=campground.title%>
                         </h5>
+                        <!-- <h5 class="card-title">
+                            < %=campground.properties.popUpMarkup%> -->
+                        <!-- testing if popUpMarkup worked -->
+                        </h5>
                         <p class="card-text">
                             <%=campground.description%>
                         </p>
@@ -37,7 +41,11 @@
             <a href="/campgrounds/new">Create a New Campground</a>
             <script>
                 const mapToken = '<%-process.env.MAPBOX_TOKEN%>';
-                // const campground = < %-JSON.stringify(campground) %>;
+                const campgrounds = { features: <%- JSON.stringify(campgrounds) %>};
+                // this is what mapbox is expecting ie object with features
+                // so we can pass this data into clusterMap.js
+                // need campgrounds here because it's on the index page with all the campgrounds
+
             </script>
 
             <script src="/javascripts/clusterMap.js"></script>
