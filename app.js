@@ -18,7 +18,7 @@ const flash = require('connect-flash');
 const ExpressError = require('./utils/ExpressError');
 const passport = require('passport');
 const LocalStrategy = require('passport-local');
-
+const mongoSanitize = require('express-mongo-sanitize');
 
 // const Campground = require('./models/campground');
 // const Review = require('./models/review');
@@ -51,6 +51,7 @@ app.set('views', path.join(__dirname, 'views'));
 app.use(express.urlencoded({ extended: true })); // parse req.body
 app.use(methodOverride('_method'));
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(mongoSanitize());
 
 const sessionConfig = {
     secret: 'thisshouldbeabettersecret',
@@ -79,6 +80,7 @@ passport.deserializeUser(User.deserializeUser());
 
 
 app.use((req, res, next) => {
+    console.log(req.query);
     // access to these in every template
     // console.log(req.session);
     if (!['/login', '/'].includes(req.originalUrl)) {
