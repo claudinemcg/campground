@@ -1,5 +1,7 @@
 <!-- error page for bad requests -->
 <!-- app.js will render this error page when a bad request is made -->
+<!-- error page for bad requests -->
+<!-- app.js will render this error page when a bad request is made -->
 <%layout ('layouts/boilerplate') %>
     <div class="row">
         <div class="col-6 offset-3">
@@ -8,12 +10,12 @@
                 <h4 class="alert-heading">
                     <%= err.message %>
                 </h4>
-                <p>Aww yeah, you successfully read this important alert message. This example text is going to run a bit
-                    longer
-                    so
-                    that you can see how spacing within an alert works with this kind of content.</p>
-                <hr>
-                <p class="mb-0">Whenever you need to, be sure to use margin utilities to keep things nice and tidy.</p>
+                <% if (process.env.NODE_ENV !=='production' ) { %>
+                    <!-- ie in development mode -->
+                    <p>
+                        <%= err.stack %>
+                    </p><!-- show error stack -->
+                    <% } %>
             </div>
         </div>
     </div>
