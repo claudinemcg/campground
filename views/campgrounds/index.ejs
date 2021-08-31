@@ -1,51 +1,53 @@
 <%layout ('layouts/boilerplate') %>
-    <div id="cluster-map" ></div>
-    <h1>Campgrounds</h1>
-    <% for (let campground of campgrounds) { %>
-        <div class="card mb-3">
-            <div class="row">
-                <div class="col-md-4">
-                    <% if (campground.images.length) {%>
-                        <img class="img-fluid" alt="" src="<%= campground.images[0].url%>">
-                        <% } else { %>
-                            <img class="img-fluid" alt=""
-                                src="https://res.cloudinary.com/di6k1pdz4/image/upload/v1629730234/YelpCamp/mzgk7hr7nmfbcwlqm4hc.jpg">
-                            <% } %>
-                </div>
-                <div class="col-md-8">
-                    <div class="card-body">
-                        <h5 class="card-title">
-                            <%=campground.title%>
-                        </h5>
-                        <!-- <h5 class="card-title">
+    <div id="cluster-map"></div>
+    <div class="conatiner">
+        <h1>Campgrounds</h1>
+        <% for (let campground of campgrounds) { %>
+            <div class="card mb-3">
+                <div class="row">
+                    <div class="col-md-4">
+                        <% if (campground.images.length) {%>
+                            <img class="img-fluid" alt="" src="<%= campground.images[0].url%>">
+                            <% } else { %>
+                                <img class="img-fluid" alt=""
+                                    src="https://res.cloudinary.com/di6k1pdz4/image/upload/v1629730234/YelpCamp/mzgk7hr7nmfbcwlqm4hc.jpg">
+                                <% } %>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <%=campground.title%>
+                            </h5>
+                            <!-- <h5 class="card-title">
                             < %=campground.properties.popUpMarkup%> -->
-                        <!-- testing if popUpMarkup worked -->
-                        </h5>
-                        <p class="card-text">
-                            <%=campground.description%>
-                        </p>
-                        <p class="card-text">
-                            <small class="text-muted">
-                                <%=campground.location%>
-                            </small>
-                        </p>
-                        <a href="/campgrounds/<%=campground._id%>" class="btn btn-primary">View <%=campground.title%>
-                        </a>
+                            <!-- testing if popUpMarkup worked -->
+                            </h5>
+                            <p class="card-text">
+                                <%=campground.description%>
+                            </p>
+                            <p class="card-text">
+                                <small class="text-muted">
+                                    <%=campground.location%>
+                                </small>
+                            </p>
+                            <a href="/campgrounds/<%=campground._id%>" class="btn btn-primary">View
+                                <%=campground.title%>
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <%} %>
-
-            <a href="/campgrounds/new">Create a New Campground</a>
-            <script>
-                const mapToken = '<%-process.env.MAPBOX_TOKEN%>';
-                const campgrounds = { features: <%- JSON.stringify(campgrounds) %>};
+            <%} %>
+    </div>
+    <!-- <a href="/campgrounds/new">Create a New Campground</a> -->
+    <script>
+        const mapToken = '<%-process.env.MAPBOX_TOKEN%>';
+        const campgrounds = { features: <%- JSON.stringify(campgrounds) %>};
                 // this is what mapbox is expecting ie object with features
                 // so we can pass this data into clusterMap.js
                 // need campgrounds here because it's on the index page with all the campgrounds
 
-            </script>
+    </script>
 
-            <script src="/javascripts/clusterMap.js"></script>
+    <script src="/javascripts/clusterMap.js"></script>
