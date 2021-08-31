@@ -27,11 +27,11 @@ const User = require('./models/user');
 const campgroundRoutes = require('./routes/campgrounds');
 const reviewRoutes = require('./routes/reviews');
 const userRoutes = require('./routes/users');
+const MongoStore = require('connect-mongo');
+const dbUrl = 'mongodb://localhost:27017/yelp-camp';
+// const dbUrl = process.env.DB_URL; // differnt database from above: use this in production- Mongo Atlas 
 
-// const dbUrl = process.env.DB_URL;
-
-mongoose.connect('mongodb://localhost:27017/yelp-camp', { //use this in development
-    // mongoose.connect(dbUrl, { // differnt database from above: use this in production- Mongo Atlas 
+mongoose.connect(dbUrl, { //use this in development
     useNewUrlParser: true,
     useCreateIndex: true,
     useUnifiedTopology: true,
@@ -56,8 +56,21 @@ app.use(methodOverride('_method'));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(mongoSanitize());
 
+const store = MongoStore.create({
+    mongoUrl: dbUrl,
+    touchAfter: 24 * 60 * 60,
+    crypto: {
+        secret: 'thisshouldbeabettersecret'
+    }
+});
+
+
+store.on("error", function (e) {
+    console.log("SESSION STORE ERROR", e)
+})
 
 const sessionConfig = {
+    store, // same as store: store
     name: 'session', // don't want to use default name (security)
     secret: 'thisshouldbeabettersecret',
     resave: false,
@@ -65,7 +78,7 @@ const sessionConfig = {
     cookie: {
         httpOnly: true, // security
         // secure: true, // cookies can only be configered over a secure connection ie https 
-        expires: Date.now() + 1000 * 60 * 60 * 24 * 7, // expires a week from date
+        expires: Date.now() + 1000 * 60 * 60 * 24 * 7, // expires a week from date milliseconds
         maxAge: 1000 * 60 * 60 * 24 * 7
     }
 }
