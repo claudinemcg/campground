@@ -28,7 +28,7 @@ const campgroundRoutes = require('./routes/campgrounds');
 const reviewRoutes = require('./routes/reviews');
 const userRoutes = require('./routes/users');
 const MongoStore = require('connect-mongo');
-const dbUrl = 'mongodb://localhost:27017/yelp-camp';
+const dbUrl = process.env.DB_URL || 'mongodb://localhost:27017/yelp-camp';
 // const dbUrl = process.env.DB_URL; // differnt database from above: use this in production- Mongo Atlas 
 
 mongoose.connect(dbUrl, { //use this in development
@@ -56,11 +56,14 @@ app.use(methodOverride('_method'));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(mongoSanitize());
 
+const secret = process.env.SECRET || 'thisshouldbeabettersecret'
+// process.env.SECRET on heroku
+
 const store = MongoStore.create({
     mongoUrl: dbUrl,
     touchAfter: 24 * 60 * 60,
     crypto: {
-        secret: 'thisshouldbeabettersecret'
+        secret, // secret: secret (const secret above)
     }
 });
 
@@ -72,7 +75,7 @@ store.on("error", function (e) {
 const sessionConfig = {
     store, // same as store: store
     name: 'session', // don't want to use default name (security)
-    secret: 'thisshouldbeabettersecret',
+    secret,
     resave: false,
     saveUninitialized: true,
     cookie: {
