@@ -3,7 +3,6 @@
 
     <div class="row">
         <div class="col-6">
-            <div id='map'></div>
             <div id="campgroundCarousel" class="carousel slide" data-bs-ride="carousel">
                 <div class="carousel-inner">
                     <% campground.images.forEach((img, i)=> { %>
@@ -58,15 +57,16 @@
                         </form>
                         <% } %>
                     </div>
-                    <div class="card-footer text-muted">
+                    <!-- <div class="card-footer text-muted">
                         <a href="/campgrounds" class="card-link">All Campgrounds</a>
-                    </div>
+                    </div> -->
             </div>
 
         </div>
         <% if (currentUser) { %>
             <!-- if you're logged in you can see the review form -->
             <div class="col-4">
+                <div id='map'></div>
                 <div class="mb-3">
                     <h2>Leave a Review</h2>
                     <form action="/campgrounds/<%=campground._id%>/reviews" method="POST" novalidate

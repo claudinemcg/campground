@@ -25,12 +25,12 @@ const seedDB = async () => { // seedDB returns a promise because it's an async f
     // const c = new Campground({ title: 'Purple Field' });
     // await c.save();
     for (let i = 0; i < 50; i++) { // creates 50 new campgrounds
-        const random55 = Math.floor(Math.random() * 55); // 55- cities in array in cities.js
+        const random1000 = Math.floor(Math.random() * 1000); // 100- cities in array in cities.js
         const price = Math.floor(Math.random() * 20) + 10; // random price
         const camp = new Campground({
             // my author id
             author: '6116631106371f5ad4bba995',
-            location: `${cities[random55].city}, ${cities[random55].state}`,
+            location: `${cities[random1000].city}, ${cities[random1000].state}`,
             title: `${sample(descriptors)} ${sample(places)}`,
             // image: 'https://source.unsplash.com/collection/483251',
             // random images
@@ -39,8 +39,8 @@ const seedDB = async () => { // seedDB returns a promise because it's an async f
             geometry: {
                 type: 'Point',
                 coordinates: [
-                    cities[random55].longitude,
-                    cities[random55].latitude
+                    cities[random1000].longitude,
+                    cities[random1000].latitude
                 ]
             },
             images: [
@@ -55,9 +55,9 @@ const seedDB = async () => { // seedDB returns a promise because it's an async f
             ]
         })
         await camp.save();
-        // console.log(camp);
     }
 }
+
 // run seedDB and then close it when it's finished
 seedDB().then(() => {
     mongoose.connection.close();
