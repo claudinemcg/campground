@@ -198,6 +198,8 @@ app.use((err, req, res, next) => {
     //error.ejs and pass err through to template so can use in response on error.ejs
 }) // catchAsync sends here if there's something wrong
 
-app.listen(3000, () => {
-    console.log('Serving on port 3000');
+const port = process.env.PORT || 3000;
+// set automatically on heroku
+app.listen(port, () => {
+    console.log(`Serving on port ${port}`);
 })
