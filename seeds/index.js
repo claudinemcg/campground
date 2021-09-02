@@ -26,17 +26,17 @@ const sample = array => array[Math.floor(Math.random() * array.length)];
 // one line functions don't need {}
 // selecting a random element from array
 
-
 const seedDB = async () => { // seedDB returns a promise because it's an async function
     await Campground.deleteMany({}); // delete every campground in database
     // const c = new Campground({ title: 'Purple Field' });
     // await c.save();
-    for (let i = 0; i < 50; i++) { // creates 50 new campgrounds
+    for (let i = 0; i < 30; i++) { // creates 30 new campgrounds
         const random55 = Math.floor(Math.random() * 55); // 55- cities in array in cities.js
         const price = Math.floor(Math.random() * 20) + 10; // random price
         const camp = new Campground({
             // my author id
-            author: '6116631106371f5ad4bba995',
+            author: '612f9854d24c9261ef4d2f76',
+            // '6116631106371f5ad4bba995', // development
             location: `${cities[random55].city}, ${cities[random55].state}`,
             title: `${sample(descriptors)} ${sample(places)}`,
             // image: 'https://source.unsplash.com/collection/483251',
