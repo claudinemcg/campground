@@ -55,18 +55,19 @@
                         <form class="d-inline" action="/campgrounds/<%=campground._id %>?_method=DELETE" method="POST">
                             <button class="card-link btn btn-danger">Delete</button>
                         </form>
-                        <% } %>
                     </div>
-                    <!-- <div class="card-footer text-muted">
-                        <a href="/campgrounds" class="card-link">All Campgrounds</a>
-                    </div> -->
+                    <% } %>
+                        <div class="card-footer text-muted">
+                            2 days ago
+                        </div>
             </div>
 
         </div>
-        <% if (currentUser) { %>
-            <!-- if you're logged in you can see the review form -->
-            <div class="col-4">
-                <div id='map'></div>
+
+        <!-- if you're logged in you can see the review form -->
+        <div class="col-6">
+            <div id='map'></div>
+            <% if (currentUser) { %>
                 <div class="mb-3">
                     <h2>Leave a Review</h2>
                     <form action="/campgrounds/<%=campground._id%>/reviews" method="POST" novalidate
@@ -125,13 +126,11 @@
                                     </form>
                                     <% } %>
                             </div>
-
                         </div>
                         <% } %>
-            </div>
+        </div>
+    </div>
 
-    </div>
-    </div>
     <script>
         const mapToken = '<%-process.env.MAPBOX_TOKEN%>';
         // need this for the script below to run
