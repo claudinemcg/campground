@@ -15,9 +15,8 @@ Visit YelpCamp: [YelpCamp](https://fathomless-tundra-46520.herokuapp.com/)
 * Authentication:-
   * Users can sign up/ login with username and password
   * Users need to be logged in to submit a campground or review
-
+  
 * Authorization:-
-
   * Users need to be logged in to add or edit their campgrounds/ reviews
   * Users cannot leave reviews on their own campground
   * Users can only edit or delete their own campgrounds/ reviews
