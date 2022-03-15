@@ -1,3 +1,5 @@
+![YelpCamp homepage image](https://github.com/claudinemcg/campground/blob/main/github-images/homepage.png?raw=true)
+
 # YelpCamp
  * A website where users can view campgrounds with the option to register/login to create or edit their own campgrounds and leave reviews on others
  * Built with Node.js, Express, HTML, CSS, JavaScript, Bootstrap, MongoDB and Mapbox
