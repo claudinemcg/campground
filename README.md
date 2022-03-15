@@ -6,7 +6,7 @@
 
 ## View Online
 
-Visit YelpCamp: [YelpCamp](https://fathomless-tundra-46520.herokuapp.com/)
+Here is a working live demo: [YelpCamp](https://fathomless-tundra-46520.herokuapp.com/)
 
 <br/>
 
@@ -51,35 +51,38 @@ yarn install
 ```
 
 ## Built with
-
-### Front-end
-
-* [ejs](http://ejs.co/)
+* [express](https://expressjs.com/)
 * [Mapbox](https://www.mapbox.com/)
 * [Bootstrap](https://getbootstrap.com/docs/3.3/)
-
-### Back-end
-
-* [express](https://expressjs.com/)
 * [mongoDB](https://www.mongodb.com/)
-* [mongoose](http://mongoosejs.com/)
-* [async](http://caolan.github.io/async/)
-* [crypto](https://nodejs.org/api/crypto.html#crypto_crypto)
-* [helmet](https://helmetjs.github.io/)
-* [passport](http://www.passportjs.org/)
-* [passport-local](https://github.com/jaredhanson/passport-local#passport-local)
-* [express-session](https://github.com/expressjs/session#express-session)
-* [method-override](https://github.com/expressjs/method-override#method-override)
-* [moment](https://momentjs.com/)
 * [cloudinary](https://cloudinary.com/)
-* [geocoder](https://github.com/wyattdanger/geocoder#geocoder)
-* [connect-flash](https://github.com/jaredhanson/connect-flash#connect-flash)
+* [connect-flash](https://github.com/jaredhanson/connect-flash)
+* [connect-mongo](https://github.com/jaredhanson/connect-mongo)
+* [cookie-parser]    
+* [dotenv]()
+* [ejs](http://ejs.co/)
+* [ejs-mate]()
+* [express]()
+* [express-mongo-sanitize]()
+* [express-session](https://github.com/expressjs/session#express-session)
+* [helmet](https://helmetjs.github.io/)
+* [joi]()
+* [mapbox]()
+* [method-override](https://github.com/expressjs/method-override#method-override)
+* [mongoose](http://mongoosejs.com/)
+* [morgan]()
+* [multer]()
+* [multer-storage-cloudinary]()
+* [passport](http://www.passportjs.org/)
+* [passport-local](http://www.passportjs.org/packages/passport-local/)
+* [passport-local-mongoose](https://www.npmjs.com/package/passport-local-mongoose)
+* [sanitize-html](https://www.npmjs.com/package/sanitize-html)
 
 ### Platforms
 
 * [Cloudinary](https://cloudinary.com/)
 * [Heroku](https://www.heroku.com/)
-* [Cloud9](https://aws.amazon.com/cloud9/?origin=c9io)
+
 ## License
 
 #### [MIT](./LICENSE)
