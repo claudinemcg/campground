@@ -32,8 +32,14 @@ Here is a working live demo: [YelpCamp](https://fathomless-tundra-46520.herokuap
   * Display campground location using Mapbox
   * Search and read exising campgrounds and reviews
 
+List of Campgrounds
 ![homepage-mapbox](https://github.com/claudinemcg/campground/blob/main/github-images/campgrounds.png?raw=true)
+![homepage-mapbox](https://github.com/claudinemcg/campground/blob/main/github-images/campgrounds-scrolled-down.png?raw=true)
+
+Campground 
 ![single-campground](https://github.com/claudinemcg/campground/blob/main/github-images/campground-logged-in.png?raw=true)
+
+New Campground Form
 ![campground-form](https://github.com/claudinemcg/campground/blob/main/github-images/new-campground-form.png?raw=true)
  
 ## Getting Started
