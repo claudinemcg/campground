@@ -96,4 +96,4 @@ yarn install
 
 ## License
 
-#### [MIT](./LICENSE)
+#### [MIT](https://github.com/claudinemcg/campground/blob/main/LICENSE.md)
