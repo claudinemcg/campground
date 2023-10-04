@@ -6,12 +6,6 @@
 
 <br/>
 
-## View Online
-
-Here is a working live demo: [YelpCamp](https://fathomless-tundra-46520.herokuapp.com/)
-
-<br/>
-
 ## Features
 
 * Authentication:-
